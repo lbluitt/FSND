@@ -1,14 +1,22 @@
 from datetime import datetime
-from flask_wtf import Form
+from flask_wtf import Form, FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from wtforms.validators import DataRequired, Optional, AnyOf, URL, Length
+import re
+from flask import flash
+
+def is_phone_number_valid(phone_number):
+    #Validation will allow numbers such as 0123456789, 012-345-6789, 012 345 6789
+    regex=re.compile('^\(?([0-9]{3})\)?[- ]?([0-9]{3})[- ]?([0-9]{4})$')
+    return regex.match(phone_number)
+    
 
 class ShowForm(Form):
     artist_id = StringField(
-        'artist_id'
+        'artist_id', validators=[DataRequired()]
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id', validators=[DataRequired()]
     )
     start_time = DateTimeField(
         'start_time',
@@ -83,13 +91,13 @@ class VenueForm(Form):
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone', validators=[Optional()] #custom validation with regex also applied on this file
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[Optional(),URL(),Length(max=500)]
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
+        # TODO implement enum restriction R: was already implemented on the starter_code
         'genres', validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
@@ -114,10 +122,10 @@ class VenueForm(Form):
         ]
     )
     facebook_link = StringField(
-        'facebook_link', validators=[URL()]
+        'facebook_link', validators=[Optional(),URL(),Length(max=120)]
     )
     website_link = StringField(
-        'website_link'
+        'website_link', validators=[Optional(),URL(),Length(max=120)]
     )
 
     seeking_talent = BooleanField( 'seeking_talent' )
@@ -125,6 +133,14 @@ class VenueForm(Form):
     seeking_description = StringField(
         'seeking_description'
     )
+    def validate(self): #validate pre-set valitador plus custom validation for the phone number
+        form_checked = FlaskForm.validate(self)
+        if not form_checked:
+            return False
+        if  self.phone.data and not is_phone_number_valid(self.phone.data):
+            self.phone.errors.append('Invalid phone number.')
+            return False
+        return True 
 
 
 
@@ -192,11 +208,11 @@ class ArtistForm(Form):
         ]
     )
     phone = StringField(
-        # TODO implement validation logic for state
-        'phone'
+        # TODO implement validation logic for state 
+        'phone', validators=[Optional()] #custom validation with regex also applied on this file
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[Optional(),URL(),Length(max=500)]
     )
     genres = SelectMultipleField(
         'genres', validators=[DataRequired()],
@@ -224,11 +240,11 @@ class ArtistForm(Form):
      )
     facebook_link = StringField(
         # TODO implement enum restriction
-        'facebook_link', validators=[URL()]
+        'facebook_link', validators=[Optional(),URL(),Length(max=120)]
      )
 
     website_link = StringField(
-        'website_link'
+        'website_link', validators=[Optional(),URL(),Length(max=120)]
      )
 
     seeking_venue = BooleanField( 'seeking_venue' )
@@ -236,4 +252,12 @@ class ArtistForm(Form):
     seeking_description = StringField(
             'seeking_description'
      )
+    def validate(self):
+        form_checked = FlaskForm.validate(self)
+        if not form_checked:
+            return False
+        if self.phone.data and not is_phone_number_valid(self.phone.data):
+            self.phone.errors.append('Invalid phone number.')
+            return False
+        return True 
 
