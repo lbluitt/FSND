@@ -310,6 +310,11 @@ def create_venue_submission():
       db.session.close()
   else:
     error=True
+    error_message=[]
+    for field, err in form.errors.items():
+      error_message.append(f"{field} {'|'.join(err)}")
+    if len(error_message)>1:
+      flash('Errors ' + str(error_message))
 
   # on successful db insert, flash success
 
@@ -685,10 +690,17 @@ def create_artist_submission():
     except:
       error=True
       db.session.rollback()
+      print(sys.exc_info())
+
     finally:
       db.session.close()
   else:
     error=True
+    error_message=[]
+    for field, err in form.errors.items():
+      error_message.append(f"{field} {'|'.join(err)}")
+    if len(error_message)>1:
+      flash('Errors ' + str(error_message))
 
 
   # TODO: modify data to be the data object returned from db insertion
