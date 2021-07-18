@@ -34,6 +34,9 @@ def create_app(test_config=None):
   '''
   @app.route('/categories',methods=['GET'])
   def get_categories():
+    """
+    Get all categories
+    """
     
     categories=Category.query.order_by(Category.id).all()
 
@@ -71,12 +74,14 @@ def create_app(test_config=None):
   '''
   @app.route('/questions',methods=['GET'])
   def get_questions():
+    """
+    Get all questions
+    """
 
     try:
 
       questions_selection= Question.query.order_by(Question.id).all()
 
-      #limit this to only when questions are more than 10?
       questions = paginate_items(request,questions_selection)
 
       if len(questions)==0:
@@ -105,6 +110,9 @@ def create_app(test_config=None):
   '''
   @app.route('/questions/<int:question_id>',methods=['DELETE'])
   def remove_question(question_id):
+    """
+    Remove a given question
+    """
 
     try:
       question=Question.query.filter(Question.id==question_id).one_or_none()
@@ -138,6 +146,9 @@ def create_app(test_config=None):
 
   @app.route('/questions',methods=['POST'])
   def create_new_question():
+    """
+    Create a new question
+    """
     body = request.get_json()
 
     question = body.get('question',None)
@@ -145,6 +156,7 @@ def create_app(test_config=None):
     difficulty = body.get('difficulty',None)
     category = body.get('category',None)
 
+    #Require all parameters in order to proceed to create the question
     if question == None or question == '' or answer== None or answer=='' or difficulty==None or difficulty=='' or category==None or category=='':
         abort(422)
 
@@ -176,6 +188,9 @@ def create_app(test_config=None):
   '''
   @app.route('/questions/search',methods=['POST'])
   def search_question():
+    """
+    Search question by search term
+    """
     body = request.get_json()
 
     search_term = body.get('searchTerm','')
@@ -210,6 +225,9 @@ def create_app(test_config=None):
   '''
   @app.route('/categories/<int:category_id>/questions',methods=['GET'])
   def get_questions_by_category(category_id):
+    """
+    Get questions for a given category
+    """
     try:
       
       category= Category.query.filter(Category.id==str(category_id)).one_or_none()
@@ -248,6 +266,10 @@ def create_app(test_config=None):
   '''
   @app.route('/quizzes', methods=['POST'])
   def get_random_question():
+    """
+    Get a random question for a given category and not included in previous questions 
+    If there are no more questions left, then send only the success value so the frontend knows there are no more questions
+    """
     body = request.get_json()
     prev_question = body.get('previous_questions',[])
     category = body.get('quiz_category',None)
