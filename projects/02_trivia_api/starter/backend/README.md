@@ -76,19 +76,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
 
-
-## Review Comment to the Students
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
-
-###Endpoints
-
-- GET '/categories'
-- GET '/questions'
-- GET '/categories/<int:category_id>/questions'
-- POST '/questions'
-- POST '/questions/search'
-- POST '/quizzes'
-- DELETE 'questions/<int:question_id>'
+## Endpoints
 
 **GET '/categories'**
 - Fetches a dictionary containing a categories object in which the keys are the ids and the value is the corresponding string of the category, along with the success value and total_categories.
