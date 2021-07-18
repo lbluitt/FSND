@@ -81,6 +81,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
 
 **Endpoints**
+
 GET '/categories'
 GET '/questions'
 GET '/categories/<int:category_id>/questions'
