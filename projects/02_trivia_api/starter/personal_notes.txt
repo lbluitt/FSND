@@ -48,4 +48,4 @@ POST /questions
 curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"Am I posting a question?","difficulty":5,"category":5,"answer":"For sure!"}'
 
 DELETE /questions/<int:question_id> 
-curl http://127.0.0.1:5000/questions/27 -X DELETE 
+curl http://127.0.0.1:5000/questions/2 -X DELETE 
