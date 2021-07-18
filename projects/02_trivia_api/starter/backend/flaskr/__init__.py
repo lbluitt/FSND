@@ -113,8 +113,6 @@ def create_app(test_config=None):
         abort(404)
 
       question.delete()
-      selection = Question.query.order_by(Question.id).all()
-      current_questions= paginate_items(request,selection)
 
       return jsonify({
         'success':True,
@@ -185,10 +183,10 @@ def create_app(test_config=None):
     try:
       selection=Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
 
-      if not selection:
-        abort(404)
-
       current_questions=paginate_items(request,selection)
+
+      if len(current_questions)==0:
+        abort(404)
 
       return jsonify({
         'success': True,
@@ -197,6 +195,7 @@ def create_app(test_config=None):
         'current_category':None
       })
     except Exception as err:
+      print(err)
       abort(422)
 
 
@@ -212,14 +211,17 @@ def create_app(test_config=None):
   @app.route('/categories/<int:category_id>/questions',methods=['GET'])
   def get_questions_by_category(category_id):
     try:
-      selection_questions = Question.query.filter(Question.category==str(category_id)).all()
-
-      if not selection_questions:
-        abort(404)
-      current_cuestions = paginate_items(request,selection_questions)
-      category= Category.query.filter(Category.id==category_id).one_or_none()
-
+      
+      category= Category.query.filter(Category.id==str(category_id)).one_or_none()
+      
       if not category:
+        abort(404)
+
+      selection_questions = Question.query.filter(Question.category==str(category_id)).all()
+        
+      current_cuestions = paginate_items(request,selection_questions)
+
+      if len(current_cuestions)==0:
         abort(404)
 
       return jsonify({
@@ -258,7 +260,7 @@ def create_app(test_config=None):
       else:
         category_questions= Question.query.filter(Question.category==str(category_id)).all()
 
-      if not category_questions:
+      if len(category_questions)==0:
         return abort(404)
 
 
