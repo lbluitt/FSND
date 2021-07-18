@@ -41,11 +41,11 @@ curl http://127.0.0.1:5000/questions?page=1
 POST /quizzes
 curl -X POST -H "Content-Type: application/json" -d '{"previous_questions":[5,9,23],"quiz_category":{"id":4}}' http://127.0.0.1:5000/quizzes
 
-POST /questions for search
+POST /questions/search 
 curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm":"what"}'
 
-POST /questions for create
-curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"Do you like bananas?","difficulty":5,"category":5,"answer":"I am a minion"}'
+POST /questions 
+curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"Am I posting a question?","difficulty":5,"category":5,"answer":"For sure!"}'
 
 DELETE /questions/<int:question_id> 
 curl http://127.0.0.1:5000/questions/27 -X DELETE 
