@@ -102,8 +102,8 @@ curl http://127.0.0.1:5000/categories
 ```
 
 **GET '/questions?page=${integer}'**
-- Fetches a paginated list of questions, a categories dictionary containing all available categories, current category string, success status and total questions. 
-- Request Arguments: page (integer) - if not specified, will be page number will be 1 by default.
+- Fetches a paginated list of questions, a categories dictionary containing all available categories, current category string, success status and total questions number. 
+- Request Arguments: page (integer) - page number will be 1 by default if not specified.
 - Returns: An object containing a categories dictionary for all available categories, current category string, a list of 10 paginated questions, the success status (boolean) and total questions number.
 
 ```
@@ -198,7 +198,7 @@ curl http://127.0.0.1:5000/questions
 
 **GET '/categories/<int:category_id>/questions'**
 - Fetches questions for a given category requested by argument.
-- Request Arguments: category_id (integer)
+- Request Arguments: category_id (integer), page (integer) - will be 1 by default if not specified.
 - Returns: An object containing current category String, a 1ist of 10 paginated questions, success status (boolean) and total questions number.
 ```
 curl http://127.0.0.1:5000/categories/1/questions
@@ -330,7 +330,7 @@ curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: applicatio
 **POST '/quizzes'**
 - Sends a post request to get a new question not included in the previous questions.
 - Request Body: {"previous_questions":array containing the ids of previous questions,"quiz_category":object of the quiz category containing the category id}
-- Returns: an object containg the new question object and success value.
+- Returns: an object containg a question object and success value.
 
 ```
 curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions":[5,9,23],"quiz_category":{"id":4}}' 
