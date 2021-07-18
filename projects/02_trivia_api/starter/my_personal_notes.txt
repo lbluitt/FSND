@@ -1,0 +1,52 @@
+@ -0,0 +1,51 @@
+Quick: Commands:
+pg_ctl -D /usr/local/var/postgres start
+conda activate trivia
+cd documents/github/FSND/projects/02_trivia_api/starter/backend
+export FLASK_APP=flaskr
+export FLASK_DEBUG=true
+export FLASK_ENV=development
+flask run
+
+
+
+Backend
+The ./backend directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in __init__.py to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
+
+./backend/flaskr/__init__.py
+./backend/test_flaskr.py
+
+
+Frontend
+The ./frontend directory contains a complete React frontend to consume the data from the Flask server. If you have prior experience building a frontend application, you should feel free to edit the endpoints as you see fit for the backend you design. If you do not have prior experience building a frontend application, you should read through the frontend code before starting and make notes regarding:
+
+What are the end points and HTTP methods the frontend is expecting to consume?
+How are the requests from the frontend formatted? Are they expecting certain parameters or payloads?
+The places where you may change the frontend behavior, and where you should be looking for the above information, are marked with TODO. These are the files you'd want to edit in the frontend:
+
+./frontend/src/components/QuestionView.js
+./frontend/src/components/FormView.js
+./frontend/src/components/QuizView.js
+
+
+
+GET /categories
+curl http://127.0.0.1:5000/categories
+
+GET /categories/1/questions
+curl http://127.0.0.1:5000/categories/1/questions
+
+GET /questions?page=1
+curl http://127.0.0.1:5000/questions?page=1
+
+POST /quizzes
+curl -X POST -H "Content-Type: application/json" -d '{"previous_questions":[5,9,23],"quiz_category":{"id":4}}' http://127.0.0.1:5000/quizzes
+
+POST /questions for search
+curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm":"what"}'
+
+POST /questions for create
+curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"Do you like bananas?","difficulty":5,"category":5,"answer":"I am a minion"}'
+
+DELETE /questions/<int:question_id> 
+curl http://127.0.0.1:5000/questions/27 -X DELETE 
