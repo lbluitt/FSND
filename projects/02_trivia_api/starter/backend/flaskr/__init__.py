@@ -5,6 +5,7 @@ from flask_cors import CORS
 import random
 import json
 from models import setup_db, Question, Category, db
+from sqlalchemy.sql.expression import func, select
 
 QUESTIONS_PER_PAGE = 10
 
@@ -271,32 +272,18 @@ def create_app(test_config=None):
     If there are no more questions left, then send only the success value so the frontend knows there are no more questions
     """
     body = request.get_json()
-    prev_question = body.get('previous_questions',[])
+    prev_questions = body.get('previous_questions',[])
     category = body.get('quiz_category',None)
 
     try:
       category_id = category['id'] if category['id'] else 0
 
       if category_id == 0:
-        category_questions= Question.query.all()
+        category_questions= Question.query.filter(~Question.id.in_(prev_questions)).order_by(func.random()).limit(1).all()
       else:
-        category_questions= Question.query.filter(Question.category==str(category_id)).all()
+        category_questions= Question.query.filter(Question.category==str(category_id)).filter(~Question.id.in_(prev_questions)).order_by(func.random()).limit(1).all()
 
-      if len(category_questions)==0:
-        return abort(404)
-
-
-      questions_options=[]
-      for question in category_questions:
-        if len(prev_question)==0:
-          questions_options.append(question.format())
-        if len(prev_question)>0:
-          if question.id not in prev_question:
-            questions_options.append(question.format())
-
-      question=None
-      if len(questions_options)>0:
-          question=random.choice(questions_options) if len(questions_options)>1 else questions_options[0]
+      question = category_questions[0].format() if len(category_questions)>0 else None
 
       if question:
         return jsonify({
@@ -309,6 +296,7 @@ def create_app(test_config=None):
           'success':True
         })
     except Exception as err:
+      print(err)
       abort(422)
 
 # ERROR HANDLERS:
