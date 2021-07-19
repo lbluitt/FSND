@@ -5,7 +5,7 @@ from flask_cors import CORS
 import random
 import json
 from models import setup_db, Question, Category, db
-from sqlalchemy.sql.expression import func, select
+from sqlalchemy.sql.expression import func
 
 QUESTIONS_PER_PAGE = 10
 
