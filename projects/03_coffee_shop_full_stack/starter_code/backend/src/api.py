@@ -62,7 +62,12 @@ def get_drinks():
             "success": True,
             "drinks": drinks_formatted
         })
-    except:
+    except Exception: 
+        '''
+        mentioning specific exceptions whenever possible. a bare 'except:' clause is equivalent to BaseException, 
+        and will catch SystemExit and KeyboardInterrupt exceptions, making it harder to interrupt a program by Ctrl-C. 
+        except Exception is equivalent to program errors.
+        '''
         abort(422)
 
 
