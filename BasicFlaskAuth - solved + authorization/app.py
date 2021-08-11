@@ -135,7 +135,7 @@ def requires_auth(permission=''):
     return requires_auth_decorator
 
 @app.route('/headers')
-@requires_auth
+@requires_auth('get:images')
 def headers(payload):
     print(payload)
     return 'Access Granted'
