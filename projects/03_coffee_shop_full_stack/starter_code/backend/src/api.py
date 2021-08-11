@@ -18,6 +18,16 @@ AUTH0_DOMAIN = "lbluitt.us.auth0.com"
 ALGORITHMS = ['RS256']
 API_AUDIENCE = "https://coffee-shop/"
 
+
+"""
+https://lbluitt.us.auth0.com/authorize?audience=https://coffee-shop/&response_type=token&client_id=5xJNGBVEMk98W6K8jOynNdaiMILF1Qjk&redirect_uri=https://127.0.0.1:8080/login-results
+
+{ex:https://coffeeshop.auth0.com}/authorize?audience={your_APIaudience}&response_type=token&client_id={your_ClientId}&redirect_uri={ex:http://127.0.0.1:8080/login-results}
+
+https://lbluitt.us.auth0.com/authorize?audience=https://coffee-shop/&response_type=token&client_id=AKldA7rlnK866Ipyev73ckd2qAgsY0K0&redirect_uri=http://localhost:8100
+
+"""
+
 '''
 @TODO uncomment the following line to initialize the datbase
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
@@ -56,6 +66,7 @@ def get_drinks():
         abort(422)
 
 
+
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -81,6 +92,7 @@ def get_drinks_detail(jwt_token_payload):
         })
     except AuthError:
         abort(422)
+
 
 
 '''
@@ -119,7 +131,6 @@ def post_drink(jwt_token_payload):
         })
     except Exception as err:
         abort(422)
-
 
 '''
 @TODO implement endpoint
@@ -168,6 +179,7 @@ def patch_drinks(jwt_token_payload,id):
         abort(422)
 
 
+
 '''
 @TODO implement endpoint
     DELETE /drinks/<id>
@@ -201,10 +213,13 @@ def delete_drinks(jwt_token_payload,id):
         abort(422)
 
 
+
 # Error Handling
 '''
 Example error handling for unprocessable entity
 '''
+
+
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
