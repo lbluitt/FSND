@@ -7,7 +7,7 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-from .database.models import db_drop_and_create_all, setup_db, Drink, db
+from .database.models import db_drop_and_create_all, setup_db, Drink
 from .auth.auth import AuthError, requires_auth
 
 app = Flask(__name__)
@@ -119,9 +119,6 @@ def post_drink(jwt_token_payload):
         })
     except Exception as err:
         abort(422)
-        db.session.rollback()
-    finally:
-        db.session.close()
 
 
 '''
@@ -169,9 +166,6 @@ def patch_drinks(jwt_token_payload,id):
         })
     except Exception as err:
         abort(422)
-        db.session.rollback()
-    finally:
-        db.session.close()
 
 
 '''
